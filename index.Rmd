@@ -19,7 +19,7 @@ query<-"SELECT playerID,yearID,teamID, HR FROM Batting
 WHERE teamID='NYA' and yearID=1927"
 sqldf(query)
 ```
-##Instances of Limitations
+##Examples of More Specific Inquiries 
 Find All Instances Where Yankees Have Hit 40 Homeruns or More.
 ```{r}
 query<-"SELECT playerID,teamID,yearID,HR FROM Batting
