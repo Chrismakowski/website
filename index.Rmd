@@ -1,5 +1,5 @@
 ---
-title: "SQL"
+title: "SQL Data Website""
 output: html_document
 ---
 
@@ -19,7 +19,7 @@ query<-"SELECT playerID,yearID,teamID, HR FROM Batting
 WHERE teamID='NYA' and yearID=1927"
 sqldf(query)
 ```
-##September 7, 2017
+##Instances Involving Limitations
 Find All Instances Where Yankees Have Hit 40 Homeruns or More.
 ```{r}
 query<-"SELECT playerID,teamID,yearID,HR FROM Batting
