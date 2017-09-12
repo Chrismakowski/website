@@ -120,6 +120,7 @@ $(document).ready(function () {
 </div>
 
 
+<hr />
 <div id="filtering-columns-and-rows" class="section level2">
 <h2>Filtering Columns and Rows</h2>
 <p>with SQL, one can filter columns with SELECT and rows with WHERE. Let’s try an example with the Lahman baseball database. First, we need to load the appropriate packages.</p>
@@ -158,6 +159,7 @@ sqldf(query)</code></pre>
 </div>
 <div id="examples-of-more-specific-inquiries" class="section level2">
 <h2>Examples of More Specific Inquiries</h2>
+<hr />
 <p>Find All Instances Where Yankees Have Hit 40 Homeruns or More.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,teamID,yearID,HR FROM Batting
 WHERE teamID='NYA' and HR&gt;=40&quot;
