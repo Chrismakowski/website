@@ -222,45 +222,45 @@ sqldf(query) </code></pre>
 <p>Find Every Instance of a Player Hitting More Than 50 Homeruns, but Let’s Have the Players With the Most Homeruns on Top.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,teamID,yearID,HR FROM Batting
 WHERE HR&gt;50 
-ORDER BY HR&quot;
+ORDER BY HR DESC&quot;
 sqldf(query) </code></pre>
 <pre><code>##     playerID teamID yearID HR
-## 1  kinerra01    PIT   1947 51
-## 2   mizejo01    NY1   1947 51
-## 3   mayswi01    NY1   1955 51
-## 4  fieldce01    DET   1990 51
-## 5  jonesan01    ATL   2005 51
-## 6  mantlmi01    NYA   1956 52
-## 7   mayswi01    SFN   1965 52
-## 8  fostege01    CIN   1977 52
-## 9  mcgwima01    OAK   1996 52
-## 10 rodrial01    TEX   2001 52
-## 11 thomeji01    CLE   2002 52
-## 12 davisch02    BAL   2013 53
-## 13  ruthba01    NYA   1920 54
-## 14  ruthba01    NYA   1928 54
-## 15 kinerra01    PIT   1949 54
-## 16 mantlmi01    NYA   1961 54
-## 17 ortizda01    BOS   2006 54
-## 18 rodrial01    NYA   2007 54
-## 19 bautijo02    TOR   2010 54
-## 20 wilsoha01    CHN   1930 56
-## 21 griffke02    SEA   1997 56
-## 22 griffke02    SEA   1998 56
-## 23 gonzalu01    ARI   2001 57
-## 24 rodrial01    TEX   2002 57
-## 25  foxxji01    PHA   1932 58
-## 26 greenha01    DET   1938 58
-## 27 howarry01    PHI   2006 58
-## 28  ruthba01    NYA   1921 59
-## 29  ruthba01    NYA   1927 60
-## 30 marisro01    NYA   1961 61
-## 31  sosasa01    CHN   1999 63
-## 32  sosasa01    CHN   2001 64
-## 33 mcgwima01    SLN   1999 65
-## 34  sosasa01    CHN   1998 66
-## 35 mcgwima01    SLN   1998 70
-## 36 bondsba01    SFN   2001 73</code></pre>
+## 1  bondsba01    SFN   2001 73
+## 2  mcgwima01    SLN   1998 70
+## 3   sosasa01    CHN   1998 66
+## 4  mcgwima01    SLN   1999 65
+## 5   sosasa01    CHN   2001 64
+## 6   sosasa01    CHN   1999 63
+## 7  marisro01    NYA   1961 61
+## 8   ruthba01    NYA   1927 60
+## 9   ruthba01    NYA   1921 59
+## 10  foxxji01    PHA   1932 58
+## 11 greenha01    DET   1938 58
+## 12 howarry01    PHI   2006 58
+## 13 gonzalu01    ARI   2001 57
+## 14 rodrial01    TEX   2002 57
+## 15 wilsoha01    CHN   1930 56
+## 16 griffke02    SEA   1997 56
+## 17 griffke02    SEA   1998 56
+## 18  ruthba01    NYA   1920 54
+## 19  ruthba01    NYA   1928 54
+## 20 kinerra01    PIT   1949 54
+## 21 mantlmi01    NYA   1961 54
+## 22 ortizda01    BOS   2006 54
+## 23 rodrial01    NYA   2007 54
+## 24 bautijo02    TOR   2010 54
+## 25 davisch02    BAL   2013 53
+## 26 mantlmi01    NYA   1956 52
+## 27  mayswi01    SFN   1965 52
+## 28 fostege01    CIN   1977 52
+## 29 mcgwima01    OAK   1996 52
+## 30 rodrial01    TEX   2001 52
+## 31 thomeji01    CLE   2002 52
+## 32 kinerra01    PIT   1947 51
+## 33  mizejo01    NY1   1947 51
+## 34  mayswi01    NY1   1955 51
+## 35 fieldce01    DET   1990 51
+## 36 jonesan01    ATL   2005 51</code></pre>
 <p>Find All Instances of a Player Striking Out Less Than 10 Times. Make Sure Each Player Had at Least 400 At-Bats. Players With the Least Strikeouts at the Top.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,teamID,yearID,SO,AB FROM Batting
 WHERE SO&lt;10 and AB&gt;=400
@@ -332,6 +332,151 @@ sqldf(query)</code></pre>
 ## 63 holmeto01    BSN   1945  9 636
 ## 64 boudrlo01    CLE   1948  9 560
 ## 65 mitchda01    CLE   1952  9 511</code></pre>
+</div>
+<div id="examples-of-aggregation" class="section level2">
+<h2>Examples of Aggregation</h2>
+<hr />
+<p>Find the career Homerun totals for all players. Limit the display to only those that have a career total of 600 or more Homeruns. Have the players with the highest total at the top.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID,sum(HR) FROM Batting 
+GROUP BY playerID 
+HAVING sum(HR)&gt;=600
+ORDER BY sum(HR) DESC&quot;
+sqldf(query)</code></pre>
+<pre><code>##    playerID sum(HR)
+## 1 bondsba01     762
+## 2 aaronha01     755
+## 3  ruthba01     714
+## 4 rodrial01     696
+## 5  mayswi01     660
+## 6 griffke02     630
+## 7 thomeji01     612
+## 8  sosasa01     609</code></pre>
+<p>Find the players who averaged 30 Homeruns per season over their career. Put the players with the highest average at the top.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID,avg(HR) FROM Batting
+GROUP BY playerID
+HAVING avg (HR)&gt;30
+ORDER BY avg(HR) DESC&quot;
+sqldf(query)</code></pre>
+<pre><code>##     playerID  avg(HR)
+## 1  pujolal01 36.93750
+## 2  bondsba01 34.63636
+## 3  mcgwima01 34.29412
+## 4  kinerra01 33.54545
+## 5  aaronha01 32.82609
+## 6  bryankr01 32.50000
+## 7   ruthba01 32.45455
+## 8   sosasa01 32.05263
+## 9  cabremi01 31.85714
+## 10 belleal01 31.75000
+## 11 rodrial01 31.63636
+## 12 schmimi01 30.44444
+## 13 abreujo02 30.33333</code></pre>
+</div>
+<div id="joining-master-table" class="section level2">
+<h2>Joining Master Table</h2>
+<hr />
+<p>Join Babe Ruth By His First and Last Name</p>
+<pre class="r"><code>query&lt;-&quot;SELECT nameFirst,nameLast,teamID,yearID,HR
+FROM Batting INNER JOIN Master
+ON Batting.playerID=Master.playerID
+WHERE Batting.playerID='ruthba01'&quot;
+sqldf(query)</code></pre>
+<pre><code>##    nameFirst nameLast teamID yearID HR
+## 1       Babe     Ruth    BOS   1914  0
+## 2       Babe     Ruth    BOS   1915  4
+## 3       Babe     Ruth    BOS   1916  3
+## 4       Babe     Ruth    BOS   1917  2
+## 5       Babe     Ruth    BOS   1918 11
+## 6       Babe     Ruth    BOS   1919 29
+## 7       Babe     Ruth    NYA   1920 54
+## 8       Babe     Ruth    NYA   1921 59
+## 9       Babe     Ruth    NYA   1922 35
+## 10      Babe     Ruth    NYA   1923 41
+## 11      Babe     Ruth    NYA   1924 46
+## 12      Babe     Ruth    NYA   1925 25
+## 13      Babe     Ruth    NYA   1926 47
+## 14      Babe     Ruth    NYA   1927 60
+## 15      Babe     Ruth    NYA   1928 54
+## 16      Babe     Ruth    NYA   1929 46
+## 17      Babe     Ruth    NYA   1930 49
+## 18      Babe     Ruth    NYA   1931 46
+## 19      Babe     Ruth    NYA   1932 41
+## 20      Babe     Ruth    NYA   1933 34
+## 21      Babe     Ruth    NYA   1934 22
+## 22      Babe     Ruth    BSN   1935  6</code></pre>
+<p>Find all instances of players hitting more than 50 Homeruns. Give first and last names, teamID, yearID and Homeruns. Have the players with the highest Homeruns total at the top.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT nameFirst,nameLast,teamID,yearID,HR
+FROM Batting INNER JOIN Master
+ON Batting.playerID=Master.playerID
+WHERE HR&gt;50
+ORDER BY HR DESC&quot;
+sqldf(query)</code></pre>
+<pre><code>##    nameFirst  nameLast teamID yearID HR
+## 1      Barry     Bonds    SFN   2001 73
+## 2       Mark   McGwire    SLN   1998 70
+## 3      Sammy      Sosa    CHN   1998 66
+## 4       Mark   McGwire    SLN   1999 65
+## 5      Sammy      Sosa    CHN   2001 64
+## 6      Sammy      Sosa    CHN   1999 63
+## 7      Roger     Maris    NYA   1961 61
+## 8       Babe      Ruth    NYA   1927 60
+## 9       Babe      Ruth    NYA   1921 59
+## 10    Jimmie      Foxx    PHA   1932 58
+## 11      Hank Greenberg    DET   1938 58
+## 12      Ryan    Howard    PHI   2006 58
+## 13      Luis  Gonzalez    ARI   2001 57
+## 14      Alex Rodriguez    TEX   2002 57
+## 15      Hack    Wilson    CHN   1930 56
+## 16       Ken   Griffey    SEA   1997 56
+## 17       Ken   Griffey    SEA   1998 56
+## 18      Babe      Ruth    NYA   1920 54
+## 19      Babe      Ruth    NYA   1928 54
+## 20     Ralph     Kiner    PIT   1949 54
+## 21    Mickey    Mantle    NYA   1961 54
+## 22     David     Ortiz    BOS   2006 54
+## 23      Alex Rodriguez    NYA   2007 54
+## 24      Jose  Bautista    TOR   2010 54
+## 25     Chris     Davis    BAL   2013 53
+## 26    Mickey    Mantle    NYA   1956 52
+## 27    Willie      Mays    SFN   1965 52
+## 28    George    Foster    CIN   1977 52
+## 29      Mark   McGwire    OAK   1996 52
+## 30      Alex Rodriguez    TEX   2001 52
+## 31       Jim     Thome    CLE   2002 52
+## 32     Ralph     Kiner    PIT   1947 51
+## 33    Johnny      Mize    NY1   1947 51
+## 34    Willie      Mays    NY1   1955 51
+## 35     Cecil   Fielder    DET   1990 51
+## 36    Andruw     Jones    ATL   2005 51</code></pre>
+<p>Join Babe Ruth By His Team Name</p>
+<pre class="r"><code>query&lt;-&quot;SELECT playerID,name,Batting.yearID,Batting.HR
+FROM Batting INNER JOIN Teams
+ON Batting.teamID=Teams.teamID AND Batting.yearID=Teams.yearID
+WHERE playerID='ruthba01'&quot;
+sqldf(query)</code></pre>
+<pre><code>##    playerID             name yearID HR
+## 1  ruthba01   Boston Red Sox   1914  0
+## 2  ruthba01   Boston Red Sox   1915  4
+## 3  ruthba01   Boston Red Sox   1916  3
+## 4  ruthba01   Boston Red Sox   1917  2
+## 5  ruthba01   Boston Red Sox   1918 11
+## 6  ruthba01   Boston Red Sox   1919 29
+## 7  ruthba01 New York Yankees   1920 54
+## 8  ruthba01 New York Yankees   1921 59
+## 9  ruthba01 New York Yankees   1922 35
+## 10 ruthba01 New York Yankees   1923 41
+## 11 ruthba01 New York Yankees   1924 46
+## 12 ruthba01 New York Yankees   1925 25
+## 13 ruthba01 New York Yankees   1926 47
+## 14 ruthba01 New York Yankees   1927 60
+## 15 ruthba01 New York Yankees   1928 54
+## 16 ruthba01 New York Yankees   1929 46
+## 17 ruthba01 New York Yankees   1930 49
+## 18 ruthba01 New York Yankees   1931 46
+## 19 ruthba01 New York Yankees   1932 41
+## 20 ruthba01 New York Yankees   1933 34
+## 21 ruthba01 New York Yankees   1934 22
+## 22 ruthba01    Boston Braves   1935  6</code></pre>
 </div>
 
 
