@@ -5,7 +5,7 @@ output: html_document
 ***
 ## Filtering Columns and Rows
 
-With SQL, One Can Filter Columns With SELECT and Rows With WHERE. Let's Try An Example With the Lahman Baseball Database. First, We Need to Load the Appropriate Packages. 
+With SQL, One Can Filter Columns With SELECT and Rows With "WHERE." Let's Try An Example With the Lahman Baseball Database. First, We Need to Load the Appropriate Packages. 
 
 ```{r warning=FALSE,message=FALSE}
 library(Lahman)
