@@ -13,7 +13,7 @@ library(sqldf)
 ```
 
 
-Now, suppose we would like to see the homerun totals for the 1927 Yankees. We could write the following:
+Now, Suppose We Would Like to See the Homerun Totals for the 1927 Yankees. We Could Write the Following:
 ```{r}
 query<-"SELECT playerID,yearID,teamID, HR FROM Batting
 WHERE teamID='NYA' and yearID=1927"
@@ -56,7 +56,7 @@ sqldf(query)
 ```
 ##Examples of Aggregation
 ***
-Find the career Homerun totals for all players. Limit the display to only those that have a career total of 600 or more Homeruns. Have the players with the highest total at the top.
+Find the Career Homerun Totals for All Players. Limit the Display to Only Those That Have a Career Total of 600 or More Homeruns. Have the Players With the Highest Total at the Top.
 ```{r}
 query<-"SELECT playerID,sum(HR) FROM Batting 
 GROUP BY playerID 
@@ -64,7 +64,7 @@ HAVING sum(HR)>=600
 ORDER BY sum(HR) DESC"
 sqldf(query)
 ```
-Find the players who averaged 30 Homeruns per season over their career. Put the players with the highest average at the top.
+Find the Players Who Averaged 30 Homeruns per Season Over Their Career. Put the Players With the Highest Average at the Top.
 ```{r}
 query<-"SELECT playerID,avg(HR) FROM Batting
 GROUP BY playerID
@@ -74,7 +74,7 @@ sqldf(query)
 ```
 ##Joining Master Table 
 ***
-Join Babe Ruth By His First and Last Name
+Join Babe Ruth By His First and Last Name.
 ```{r}
 query<-"SELECT nameFirst,nameLast,teamID,yearID,HR
 FROM Batting INNER JOIN Master
@@ -82,7 +82,7 @@ ON Batting.playerID=Master.playerID
 WHERE Batting.playerID='ruthba01'"
 sqldf(query)
 ```
-Find all instances of players hitting more than 50 Homeruns. Give first and last names, teamID, yearID and Homeruns. Have the players with the highest Homeruns total at the top.
+Find All Instances of Players Hitting More Than 50 Homeruns. Give First and Last Names, teamID, yearID and Homeruns. Have the Players With the Highest Homeruns Total at the Top.
 ```{r}
 query<-"SELECT nameFirst,nameLast,teamID,yearID,HR
 FROM Batting INNER JOIN Master
@@ -91,11 +91,22 @@ WHERE HR>50
 ORDER BY HR DESC"
 sqldf(query)
 ```
-Join Babe Ruth By His Team Name
+Join Babe Ruth By His Team Name.
 ```{r}
 query<-"SELECT playerID,name,Batting.yearID,Batting.HR
 FROM Batting INNER JOIN Teams
 ON Batting.teamID=Teams.teamID AND Batting.yearID=Teams.yearID
 WHERE playerID='ruthba01'"
+sqldf(query)
+```
+List All Players Named "Bob" Who Averaged More Than One Million Dollars per Year in Sallary for Their Careers. Include Last Names.
+```{r}
+query<-"SELECT nameFirst,nameLast,avg(salary)
+FROM Salaries INNER JOIN Master
+ON Salaries.playerID=Master.playerID
+WHERE nameFirst='Bob'
+GROUP BY Salaries.playerID
+HAVING avg(salary)>1000000"
+
 sqldf(query)
 ```

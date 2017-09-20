@@ -126,7 +126,7 @@ $(document).ready(function () {
 <p>with SQL, one can filter columns with SELECT and rows with WHERE. Let’s try an example with the Lahman baseball database. First, we need to load the appropriate packages.</p>
 <pre class="r"><code>library(Lahman)
 library(sqldf)</code></pre>
-<p>Now, suppose we would like to see the homerun totals for the 1927 Yankees. We could write the following:</p>
+<p>Now, Suppose We Would Like to See the Homerun Totals for the 1927 Yankees. We Could Write the Following:</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,yearID,teamID, HR FROM Batting
 WHERE teamID='NYA' and yearID=1927&quot;
 sqldf(query)</code></pre>
@@ -336,7 +336,7 @@ sqldf(query)</code></pre>
 <div id="examples-of-aggregation" class="section level2">
 <h2>Examples of Aggregation</h2>
 <hr />
-<p>Find the career Homerun totals for all players. Limit the display to only those that have a career total of 600 or more Homeruns. Have the players with the highest total at the top.</p>
+<p>Find the Career Homerun Totals for All Players. Limit the Display to Only Those That Have a Career Total of 600 or More Homeruns. Have the Players With the Highest Total at the Top.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,sum(HR) FROM Batting 
 GROUP BY playerID 
 HAVING sum(HR)&gt;=600
@@ -351,7 +351,7 @@ sqldf(query)</code></pre>
 ## 6 griffke02     630
 ## 7 thomeji01     612
 ## 8  sosasa01     609</code></pre>
-<p>Find the players who averaged 30 Homeruns per season over their career. Put the players with the highest average at the top.</p>
+<p>Find the Players Who Averaged 30 Homeruns per Season Over Their Career. Put the Players With the Highest Average at the Top.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,avg(HR) FROM Batting
 GROUP BY playerID
 HAVING avg (HR)&gt;30
@@ -375,7 +375,7 @@ sqldf(query)</code></pre>
 <div id="joining-master-table" class="section level2">
 <h2>Joining Master Table</h2>
 <hr />
-<p>Join Babe Ruth By His First and Last Name</p>
+<p>Join Babe Ruth By His First and Last Name.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT nameFirst,nameLast,teamID,yearID,HR
 FROM Batting INNER JOIN Master
 ON Batting.playerID=Master.playerID
@@ -404,7 +404,7 @@ sqldf(query)</code></pre>
 ## 20      Babe     Ruth    NYA   1933 34
 ## 21      Babe     Ruth    NYA   1934 22
 ## 22      Babe     Ruth    BSN   1935  6</code></pre>
-<p>Find all instances of players hitting more than 50 Homeruns. Give first and last names, teamID, yearID and Homeruns. Have the players with the highest Homeruns total at the top.</p>
+<p>Find All Instances of Players Hitting More Than 50 Homeruns. Give First and Last Names, teamID, yearID and Homeruns. Have the Players With the Highest Homeruns Total at the Top.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT nameFirst,nameLast,teamID,yearID,HR
 FROM Batting INNER JOIN Master
 ON Batting.playerID=Master.playerID
@@ -448,7 +448,7 @@ sqldf(query)</code></pre>
 ## 34    Willie      Mays    NY1   1955 51
 ## 35     Cecil   Fielder    DET   1990 51
 ## 36    Andruw     Jones    ATL   2005 51</code></pre>
-<p>Join Babe Ruth By His Team Name</p>
+<p>Join Babe Ruth By His Team Name.</p>
 <pre class="r"><code>query&lt;-&quot;SELECT playerID,name,Batting.yearID,Batting.HR
 FROM Batting INNER JOIN Teams
 ON Batting.teamID=Teams.teamID AND Batting.yearID=Teams.yearID
@@ -477,6 +477,24 @@ sqldf(query)</code></pre>
 ## 20 ruthba01 New York Yankees   1933 34
 ## 21 ruthba01 New York Yankees   1934 22
 ## 22 ruthba01    Boston Braves   1935  6</code></pre>
+<p>List All Players Named “Bob” Who Averaged More Than One Million Dollars per Year in Sallary for Their Careers. Include Last Names.</p>
+<pre class="r"><code>query&lt;-&quot;SELECT nameFirst,nameLast,avg(salary)
+FROM Salaries INNER JOIN Master
+ON Salaries.playerID=Master.playerID
+WHERE nameFirst='Bob'
+GROUP BY Salaries.playerID
+HAVING avg(salary)&gt;1000000&quot;
+
+sqldf(query)</code></pre>
+<pre><code>##   nameFirst  nameLast avg(salary)
+## 1       Bob     Boone     1047580
+## 2       Bob    Horner     1416667
+## 3       Bob     Howry     1804583
+## 4       Bob     Ojeda     1035926
+## 5       Bob   Stanley     1067500
+## 6       Bob Tewksbury     1288182
+## 7       Bob     Welch     1930417
+## 8       Bob   Wickman     2635812</code></pre>
 </div>
 
 
